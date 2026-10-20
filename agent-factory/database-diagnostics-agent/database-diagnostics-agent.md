@@ -6,7 +6,7 @@ In this lab, you will use Oracle AI Database Private Agent Factory to create a c
 
 In this lab, you will explore **Oracle AI Database Private Agent Factory**, a no-code environment for building, deploying, and managing AI agents grounded in enterprise data.
 
-You will begin by accessing Private Agent Factory and creating an **Agent Builder** to create a custom AI agent that connects to the managed MCP Server configured in Lab.
+You will use **Agent Builder** to create a custom AI agent that connects to the managed MCP Server preconfigured for this workshop.
 
 This lab demonstrates how Oracle AI Database Private Agent Factory can combine enterprise knowledge, AI models, agent workflows, and Model Context Protocol (MCP) tools while keeping enterprise data and database access governed.
 
@@ -26,18 +26,12 @@ Before starting this lab, verify that the following resources are available:
 
 - Access to the Oracle AI Database Private Agent Factory workshop environment.
 - The workshop user credentials provided to you.
-- The enterprise documents provided for this workshop.
-- Access to the AI and embedding models configured for the workshop.
-- The OCI Managed MCP Server configured
-- The MCP Server authentication information required by the workshop.
+- Access to the language model configured for the workshop.
+- Access to the preconfigured MCP Server for Exadata Database Service and its sample retail sales dataset.
 
 > **Note:** The database, AI models, network access, IAM configuration, and supporting resources required for this workshop are provided as part of the workshop environment unless otherwise specified.
 
-
-
-## Task 1: Create a Custom AI Agent with MCP Tool
-
-In this task, you will use **Agent Builder** to create a custom AI agent that interacts with Oracle AI Database through the managed MCP Server configured in Lab 1.
+You will use **Agent Builder** to create a custom AI agent that interacts with Oracle AI Database through the managed MCP Server preconfigured for this workshop.
 
 Model Context Protocol provides a standardized interface through which an AI agent can discover and invoke approved tools. In this workshop, the MCP Server provides the governed connection between Private Agent Factory and Oracle AI Database.
 
@@ -56,13 +50,13 @@ Custom AI Agent
 MCP Tool
   |
   v
-OCI Database Tools MCP Server
+Exadata Database Service MCP Server
   |
   v
 Oracle AI Database
 ```
 
-### **Review the Preconfigured MCP Server**
+## Task 1: Review the Preconfigured MCP Server
 
 In this task, you will locate and review the MCP Server that has already been configured in Oracle AI Database Private Agent Factory.
 
@@ -71,14 +65,12 @@ In this task, you will locate and review the MCP Server that has already been co
 2. Select **MCP Servers**.
 
 3. Locate the preconfigured MCP Server named: ***MCP Server for Exadata Database Service on Exascale Infrastructure***
-   
 
 4. Confirm that the MCP Server status is **Connected**.
-   
+
     ![mcp servers](./images/mcp-servers.png)
 
     > **Important:** The MCP Server has already been configured for you. Do not click **Add MCP server**, modify the configuration, enter credentials, or delete the existing MCP Server.
-
 
 5. In the **Actions** column, click the **View** icon.
 
@@ -89,24 +81,22 @@ In this task, you will locate and review the MCP Server that has already been co
     - Sharing information
     - Ownership
 
-   <!-- ![MCP Server details](./images/mcp-server-details.png) -->
-
     You have now located and reviewed the preconfigured MCP Server in Private Agent Factory.
 
-### **Create a Custom Agent Flow**
+## Task 2: Create a Custom Agent Flow
 
-7. Navigate to **Agent Builder**.
-   
+1. Navigate to **Agent Builder**.
+
     ![agent builder](./images/navigate-agent-builder.png)
 
-8. On the Agent Builder canvas, add the components required for the custom agent workflow.
-   
-    Add the **Agent** component 
+2. On the Agent Builder canvas, add the components required for the custom agent workflow.
+
+    Add the **Agent** component
 
     ![name flow](./images/name-flow.png)
 
-9. Enter a name for the flow.
-    
+3. Click the **Edit** pencil beside the flow name and enter a name for the flow.
+
     For example:
 
     ```text
@@ -123,18 +113,17 @@ In this task, you will locate and review the MCP Server that has already been co
 
     ![name flow](./images/name-flow-save.png)
 
-10. Click **Save changes** to create the flow.
+4. Click **Save changes** to create the flow.
 
+## Task 3: Configure the Agent
 
-### **Configure the Agent**
+1. Select the **Agent** component on the canvas.
 
-11. Select the **Agent** component on the canvas.
+2. Under **Select LLM to use**, select the LLM provided for the workshop environment:
 
-12. Under **Select LLM to use**, select the LLM provided for the workshop environment:
+    Select `llm_model_entry (oci)`, as shown in the screenshot, or the model specified by your instructor.
 
-    select ***llm-model-entry (oci)***
-
-13. In **Custom instructions**, enter the following:
+3. In **Custom instructions**, enter the following:
 
     ```nohighlight
     <copy>You are an enterprise database assistant.
@@ -146,60 +135,58 @@ In this task, you will locate and review the MCP Server that has already been co
     Provide clear and concise responses using short bullet points. When appropriate, include the tool or database information used to support the answer.</copy>
     ```
 
-14. In **Agent description**, enter the name of the agent:
+4. In **Agent description**, enter the name of the agent:
 
     ```nohighlight
     <copy>Exascale Data Assistant</copy>
     ```
 
-15. Leave the **Prompt** field blank.
+5. Leave the **Prompt** field blank.
 
-16. Leave **Temperature** at the workshop default of `0.01`.
+6. Leave **Temperature** at the workshop default of `0.01`.
 
-17. Review the Agent configuration 
+7. Review the Agent configuration
 
     ![name flow](./images/configure-agent.png)
 
+## Task 4: Add the MCP Tools
 
-### **Add the MCP Tools**
-
-18. Add an **MCP Server** component to the workflow. Select the MCP Server connection configured earlier.
+1. Add an **MCP Server** component to the workflow. Select the MCP Server connection configured earlier.
 
     Review the tools available from the MCP Server.
 
     ![mcp server tool](./images/mcp-server-tool.png)
 
-    Select only the tools required by this custom agent.
+    In **Allowed tools**, select the tools approved by your instructor for schema and object discovery and read-only queries. Leaving this field empty enables all tools exposed by the server.
 
     > **Note:** Limiting an agent to the tools required for its intended task reduces unnecessary capabilities and helps maintain a governed agent workflow.
 
-19. Connect the MCP Server component to the **Tools** input of the Agent component.
-    
+2. Connect the MCP Server component to the **Tools** input of the Agent component.
+
     ![mcp server tool](./images/connect-mcp.png)
 
-20. Verify that the remaining workflow components are connected correctly.
-    
+3. Add and connect the remaining workflow components.
+
     Add the Chat Input and Chat Output components.
 
     ![chat components](./images/chat-components.png)
 
-    Connect both components to the Agent 
+    Connect the **Message** output of **Chat input** to the Agent's **Prompt** input. Connect the Agent's **Message** output to the **Message** input of **Chat output**.
 
     ![connect chat](./images/connect-chat.png)
 
+4. Click **Save** to save the custom agent flow.
 
-21. Click **Save** to save the custom agent flow.
-    
     ![save flow](./images/save-flow.png)
 
-### **Test the MCP Connection in Playground**
+## Task 5: Test the MCP Connection in Playground
 
-22. Open the completed workflow in **Playground**.
-    
+1. Open the completed workflow in **Playground**.
+
     ![open playground](./images/playground.png)
 
-23. Enter a prompt that asks the agent about its available database capabilities.
-   
+2. Enter a prompt that asks the agent about its available database capabilities.
+
     ![chat mcp](./images/mcp-chat.png)
 
     For example:
@@ -212,9 +199,9 @@ In this task, you will locate and review the MCP Server that has already been co
 
     ![database tools](./images/database-tools.png)
 
-24. Verify that the agent recognizes the tools exposed through the MCP Server.
+3. Verify that the agent recognizes the tools exposed through the MCP Server.
 
-25. Enter a natural-language question that requires information from the Oracle AI Database.
+4. Enter a natural-language question that requires information from the Oracle AI Database.
 
     > **Note:** Use a question that corresponds to the sample database objects and data provided with the workshop. For this demonstration, we are using a sample retail sales dataset containing transaction, product, channel, regional, sales, margin, and return information.
 
@@ -226,13 +213,13 @@ In this task, you will locate and review the MCP Server that has already been co
     <copy>Give me an executive summary of the retail sales data for the full available period. Include the date range, total net sales, total orders, total refunds, and sales by channel.</copy>
     ```
 
-26. Submit the question.
+5. Submit the question.
 
-27. Observe the agent execution.
+6. Observe the agent execution.
 
-28. Verify that the agent invokes an appropriate MCP tool rather than attempting to answer the database-specific question using only the language model.
+7. Verify that the agent invokes an appropriate MCP tool. Expand the tool output or execution details when available; ask your instructor to show the execution trace if needed. An answer naming a tool alone does not verify that the tool ran successfully.
 
-29. Review the response returned by the agent.
+8. Review the response returned by the agent.
 
     Ask more sample questions:
 
@@ -260,7 +247,7 @@ In this task, you will locate and review the MCP Server that has already been co
     <copy>Using gross margin amount, defined as net sales minus cost, which five products generated the highest total gross margin? Include product name, category, net sales, cost, gross margin, and margin percentage.</copy>
     ```
 
-     **Ask a cross-analysis question**
+    **Ask a cross-analysis question**
 
     ```text
     <copy>Among the five highest-margin products, which channel and region generated the most net sales?</copy>
@@ -272,19 +259,16 @@ In this task, you will locate and review the MCP Server that has already been co
     <copy>Which region has the highest return rate? Calculate return rate as returned transactions divided by total transactions, and include net sales and refund amount.</copy>
     ```
 
+9. Compare the answer with the returned tool data. Check the date range, totals, and calculations against the query results. If a tool fails or the sample data is unavailable, ask your instructor to check the shared connection before continuing.
 
-30. Verify that the answer is based on information returned from Oracle AI Database.
+    Congratulations! You have now created a custom AI agent that can interact with Oracle AI Database through the managed MCP Server.
 
-
-Congratulations! You have now created a custom AI agent that can interact with Oracle AI Database through the managed MCP Server.
-
-This architecture enables AI applications to use enterprise database capabilities through a standardized MCP interface while database access remains governed independently from the agent.
+    This architecture enables AI applications to use enterprise database capabilities through a standardized MCP interface while database access remains governed independently from the agent.
 
 ## Acknowledgements
 
-**Authors** 
+**Authors**
 
-* Leo Alvarado, Vishal Patil, Product Management, Oracle Database Cloud Services, Multicloud 
+* Leo Alvarado, Vishal Patil, Product Management, Oracle Database Cloud Services, Multicloud
 
 **Last Updated Date** - September, 2026
-

@@ -22,7 +22,7 @@
     },
     {
       "title": "Lab 4: Custom Agent with Exadata Database Service MCP Server",
-      "description": "Custom Agent with Exadata Database Service MCP Server",
+      "description": "Build and test a custom AI agent that queries sample retail data through the preconfigured Exadata Database Service MCP Server.",
       "type": "livelabs",
       "filename": "../../database-diagnostics-agent/database-diagnostics-agent.md"
     },
