@@ -271,4 +271,4 @@ In this task, you will locate and review the MCP Server that has already been co
 
 * Leo Alvarado, Vishal Patil, Product Management, Oracle Database Cloud Services, Multicloud
 
-**Last Updated Date** - September, 2026
+**Last Updated Date** - October, 2026
